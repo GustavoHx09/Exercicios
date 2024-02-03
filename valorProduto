@@ -1,0 +1,31 @@
+import java.util.Locale;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+
+		Locale.setDefault(Locale.US);
+		Scanner sc = new Scanner(System.in);
+
+		int c1, n1, c2, n2;
+		double v1, v2;
+
+		c1 = sc.nextInt();
+		n1 = sc.nextInt();
+		v1 = sc.nextDouble();
+
+		c2 = sc.nextInt();
+		n2 = sc.nextInt();
+		v2 = sc.nextDouble();
+
+		double peca1 = n1 * v1;
+		double peca2 = n2 * v2;
+		
+		double soma = peca1 + peca2;
+		
+		System.out.printf("Valor a pagar: R$%.2f%n", soma);
+		
+		sc.close();
+	}
+}
