@@ -1,0 +1,130 @@
+// APPLICATION
+
+package application;
+
+import entities.Funcionarios;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+
+public class Program {
+
+    public static void main(String[] args) {
+        Locale.setDefault(Locale.US);
+
+        List<Funcionarios> funcionarios = new ArrayList<>(Arrays.asList(
+                new Funcionarios("Maria", LocalDate.of(2000, 10, 18), new BigDecimal("2009.44"), "Operador"),
+                new Funcionarios("João", LocalDate.of(1990, 05, 20), new BigDecimal("2284.38"), "Operador"),
+                new Funcionarios("Caio", LocalDate.of(1961, 05, 30), new BigDecimal("9836.14"), "Coordenador"),
+                new Funcionarios("Miguel", LocalDate.of(1988, 10, 10), new BigDecimal("19119.88"), "Diretor"),
+                new Funcionarios("Alice", LocalDate.of(1995, 01, 10), new BigDecimal("2234.68"), "Recepcionista"),
+                new Funcionarios("Heitor", LocalDate.of(1999, 11, 10), new BigDecimal("1582.72"), "Operador"),
+                new Funcionarios("Arthur", LocalDate.of(1993, 03, 10), new BigDecimal("4071.84"), "Contador"),
+                new Funcionarios("Laura", LocalDate.of(1994, 05, 10), new BigDecimal("3017.45"), "Gerente"),
+                new Funcionarios("Heloisa", LocalDate.of(2003, 07, 10), new BigDecimal("1606.85"), "Eletricista"),
+                new Funcionarios("Helena", LocalDate.of(1996, 9, 10), new BigDecimal("2799.73"), "Gerente")
+        ));
+
+        // Remover o funcionário João
+        funcionarios.removeIf(f -> f.getName().equals("João"));
+
+        // Aplicar aumento de 10% tentei fazer mas aparentemente não esta funcionando.
+        funcionarios.forEach(f -> f.setSalary(f.getSalary().multiply(new BigDecimal("1.10"))));
+
+        // Agrupar por função usando map ainda não aprendi.
+        // Imprimir todos os funcionários
+        funcionarios.forEach(System.out::println);
+
+        // Imprimir agrupados por função também não consegui!
+        // Funcionários com aniversário em outubro e dezembro
+        System.out.println("\nAniversariantes de Outubro e Dezembro:");
+        funcionarios.stream()
+                .filter(f -> f.getDataNascimento().getMonthValue() == 10 || f.getDataNascimento().getMonthValue() == 12)
+                .forEach(System.out::println);
+
+        // Separar por Funcionário mais velho ainda não aprendi.
+        // Ordenar por ordem alfabética também ainda não.
+        // A soma total dos salários não estava dando certo então decidi deixar sem.
+        // E a quantidade de salários mínimos também não deu certo.
+    }
+}
+
+
+//ENTITIES
+
+package entities;
+
+import java.time.LocalDate;
+
+public class Pessoas {
+
+    protected String name;
+    protected LocalDate dataNascimento;
+
+    public Pessoas() {
+    }
+
+    public Pessoas(String name, LocalDate dataNascimento) {
+        this.name = name;
+        this.dataNascimento = dataNascimento;
+    }
+
+}
+
+
+package entities;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Funcionarios extends Pessoas {
+
+    private BigDecimal salary;
+    private String function;
+
+    public Funcionarios() {
+    }
+
+    public Funcionarios(String name, LocalDate dataNascimento, BigDecimal salary, String function) {
+        super(name, dataNascimento);
+        this.salary = salary;
+        this.function = function;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salario) {
+        this.salary = salary;
+    }
+
+    public String getFunction() {
+        return function;
+    }
+
+    public int getIdade() {
+        return LocalDate.now().getYear() - dataNascimento.getYear();
+    }
+
+    @Override
+    public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return String.format("Nome: %s, Data Nasc.: %s, Salário: R$ %,.2f, Função: %s",
+                name, dataNascimento.format(formatter), salary, function);
+    }
+
+}
+
